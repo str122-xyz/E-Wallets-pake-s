@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "39225764694",
+    "project_id": "e-money-2fa",
+    "storage_bucket": "e-money-2fa.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:39225764694:android:a99f423a2ebcaf085584f7",
+        "android_client_info": {
+          "package_name": "com.bsg.mahasigma.dompet_kampus_global"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBftnIlqGLzF06Tri3tkcyos3DKhlA4-N4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:39225764694:android:b59cba50c4327b8c5584f7",
+        "android_client_info": {
+          "package_name": "emoney.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBftnIlqGLzF06Tri3tkcyos3DKhlA4-N4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
