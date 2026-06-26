@@ -1,10 +1,19 @@
+import 'package:flutter/foundation.dart';
+
 class AppConstants {
   static const String appName = 'Dompet Kampus Global';
   static const String appVersion = '1.0.0';
 
-  // API
-  // static const String baseUrl = 'http://192.168.0.7:8080'; // Android emulator → localhost
-  static const String baseUrl = 'http://localhost:8080';
+  // API — otomatis switch base URL sesuai platform
+  // Web/Chrome -> localhost, Android -> IP WiFi network
+  static String get baseUrl {
+    if (kIsWeb) {
+      return 'http://localhost:8080';
+    } else {
+      return 'http://192.168.1.11:8080';
+    }
+  }
+
   static const String apiVersion = '/v1';
   static const int connectTimeout = 30;
   static const int receiveTimeout = 30;
