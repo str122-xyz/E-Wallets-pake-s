@@ -27,6 +27,7 @@ import '../../presentation/pages/transfer/transfer_amount_page.dart';
 import '../../presentation/pages/transfer/transfer_confirm_page.dart';
 import '../../presentation/pages/transfer/transfer_page.dart';
 import '../../presentation/widgets/app_tab_bar.dart';
+import '../../presentation/pages/payment/otp_verify_page.dart';
 
 class AppRouter {
   static final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -59,21 +60,24 @@ class AppRouter {
             path: '/2fa/smtp',
             builder: (_, state) {
               final extra = state.extra as Map<String, dynamic>?;
-              return _withOtp(TwoFASmtpPage(mode: extra?['mode'] as String? ?? 'login'));
+              return _withOtp(
+                  TwoFASmtpPage(mode: extra?['mode'] as String? ?? 'login'));
             },
           ),
           GoRoute(
             path: '/2fa/totp',
             builder: (_, state) {
               final extra = state.extra as Map<String, dynamic>?;
-              return _withOtp(TwoFATotpPage(mode: extra?['mode'] as String? ?? 'login'));
+              return _withOtp(
+                  TwoFATotpPage(mode: extra?['mode'] as String? ?? 'login'));
             },
           ),
           GoRoute(
             path: '/2fa/notif',
             builder: (_, state) {
               final extra = state.extra as Map<String, dynamic>?;
-              return _withOtp(TwoFANotifPage(mode: extra?['mode'] as String? ?? 'login'));
+              return _withOtp(
+                  TwoFANotifPage(mode: extra?['mode'] as String? ?? 'login'));
             },
           ),
           // Main app with tabs
@@ -94,10 +98,17 @@ class AppRouter {
                   active: tab,
                   onTab: (t) {
                     switch (t) {
-                      case 'history': context.go('/history'); break;
-                      case 'promo': context.go('/promo'); break;
-                      case 'akun': context.go('/akun'); break;
-                      default: context.go('/home');
+                      case 'history':
+                        context.go('/history');
+                        break;
+                      case 'promo':
+                        context.go('/promo');
+                        break;
+                      case 'akun':
+                        context.go('/akun');
+                        break;
+                      default:
+                        context.go('/home');
                     }
                   },
                   onScan: () => context.go('/payment'),
@@ -106,13 +117,16 @@ class AppRouter {
             },
             routes: [
               GoRoute(path: '/home', builder: (_, __) => const HomePage()),
-              GoRoute(path: '/history', builder: (_, __) => const HistoryPage()),
+              GoRoute(
+                  path: '/history', builder: (_, __) => const HistoryPage()),
               GoRoute(path: '/promo', builder: (_, __) => const PromoPage()),
               GoRoute(path: '/akun', builder: (_, __) => const AccountPage()),
             ],
           ),
           // Payment flows (no tab bar)
-          GoRoute(path: '/topup', builder: (_, __) => _withPayment(const TopUpPage())),
+          GoRoute(
+              path: '/topup',
+              builder: (_, __) => _withPayment(const TopUpPage())),
           GoRoute(path: '/transfer', builder: (_, __) => const TransferPage()),
           GoRoute(
             path: '/transfer/amount',
@@ -154,12 +168,22 @@ class AppRouter {
                 subtitle: extra['subtitle'] as String? ?? '',
                 amount: (extra['amount'] as num? ?? 0).toDouble(),
                 lines: (extra['lines'] as List<dynamic>?)
-                    ?.map((l) => (l as List<dynamic>).map((e) => e.toString()).toList())
-                    .toList() ?? [],
+                        ?.map((l) => (l as List<dynamic>)
+                            .map((e) => e.toString())
+                            .toList())
+                        .toList() ??
+                    [],
               ));
             },
           ),
-          GoRoute(path: '/merchant', builder: (_, __) => _withPayment(const MerchantCheckoutPage())),
+          GoRoute(
+              path: '/merchant',
+              builder: (_, __) => _withPayment(const MerchantCheckoutPage())),
+          GoRoute(
+            path: '/otp-verify',
+            builder: (_, state) => _withPayment(
+                OtpVerifyPage(flowData: state.extra as Map<String, dynamic>)),
+          ),
         ],
       );
 
@@ -177,15 +201,22 @@ class AppRouter {
   static Widget _withAccount(Widget child) {
     return MultiBlocProvider(providers: [
       BlocProvider(create: (_) => sl<AuthBloc>()),
-      BlocProvider(create: (_) => sl<AccountBloc>()),
+      // AccountBloc dari factory selalu mulai dari AccountInitial -- tidak
+      // mewarisi state AccountLoaded dari Home -- jadi langsung trigger fetch
+      // begitu instance dibuat, supaya saldo tersedia tanpa perlu tiap
+      // halaman menambahkan initState sendiri-sendiri.
+      BlocProvider(
+          create: (_) => sl<AccountBloc>()..add(AccountLoadRequested())),
     ], child: child);
   }
 
   static Widget _withPayment(Widget child) {
     return MultiBlocProvider(providers: [
       BlocProvider(create: (_) => sl<AuthBloc>()),
-      BlocProvider(create: (_) => sl<AccountBloc>()),
+      BlocProvider(
+          create: (_) => sl<AccountBloc>()..add(AccountLoadRequested())),
       BlocProvider(create: (_) => sl<PaymentBloc>()),
+      BlocProvider(create: (_) => sl<OtpBloc>()),
     ], child: child);
   }
 }
