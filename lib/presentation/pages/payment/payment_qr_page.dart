@@ -15,11 +15,22 @@ class PaymentQrPage extends StatefulWidget {
 
 class _PaymentQrPageState extends State<PaymentQrPage> {
   bool _detected = false;
+  bool _showSheet = false;
   bool _sheetShown = false;
   final _controller = MobileScannerController();
 
-  // Mock merchant data for demo
-  final _merchant = {'name': 'Kantin Teknik UI', 'sub': 'NMID: ID2024088123 · QRIS', 'amount': 27000.0};
+  // NOTE (demo): Data merchant berikut adalah data simulasi untuk keperluan
+  // presentasi UAS. Scanner kamera tetap aktif dan mendeteksi pola QR
+  // sungguhan (lewat package mobile_scanner), namun konten QR belum
+  // didekode -- begitu ada barcode apapun terdeteksi, kita tampilkan data
+  // tagihan contoh ini. Decoding QR asli (mengambil merchant_id, amount,
+  // dll dari payload QR) ada di luar scope UAS ini yang berfokus pada
+  // Deep Link App-to-App dan 2FA.
+  final _merchant = {
+    'name': 'Kantin Aditzy',
+    'sub': 'NMID: ID1123150070 · QRIS',
+    'amount': 19000.0
+  };
 
   @override
   void dispose() {
@@ -31,6 +42,11 @@ class _PaymentQrPageState extends State<PaymentQrPage> {
     if (!_detected) {
       setState(() => _detected = true);
       _controller.stop();
+      // Jeda singkat agar transisi "kode terdeteksi" -> sheet pembayaran
+      // terasa disengaja, bukan seperti glitch saat demo.
+      Future.delayed(const Duration(milliseconds: 600), () {
+        if (mounted) setState(() => _showSheet = true);
+      });
     }
   }
 
@@ -48,8 +64,7 @@ class _PaymentQrPageState extends State<PaymentQrPage> {
             // Header
             _buildHeader(),
             // Detected sheet
-            if (_detected && !_sheetShown)
-              _buildDetectedSheet(),
+            if (_showSheet && !_sheetShown) _buildDetectedSheet(),
           ],
         ),
       ),
@@ -66,7 +81,8 @@ class _PaymentQrPageState extends State<PaymentQrPage> {
         child: Row(
           children: [
             IconButton(
-              icon: const Icon(Icons.close_rounded, color: Colors.white, size: 24),
+              icon: const Icon(Icons.close_rounded,
+                  color: Colors.white, size: 24),
               onPressed: () => context.go('/home'),
             ),
             const Expanded(
@@ -100,11 +116,17 @@ class _PaymentQrPageState extends State<PaymentQrPage> {
                 height: 250,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(24),
-                  border: Border.all(color: Colors.white.withValues(alpha: 0.15), width: 1),
+                  border: Border.all(
+                      color: Colors.white.withValues(alpha: 0.15), width: 1),
                 ),
               ),
               // Corner brackets
-              ...[[0, 0], [1, 0], [0, 1], [1, 1]].map((corner) => Positioned(
+              ...[
+                [0, 0],
+                [1, 0],
+                [0, 1],
+                [1, 1]
+              ].map((corner) => Positioned(
                     top: corner[1] == 0 ? 0 : null,
                     bottom: corner[1] == 1 ? 0 : null,
                     left: corner[0] == 0 ? 0 : null,
@@ -114,16 +136,32 @@ class _PaymentQrPageState extends State<PaymentQrPage> {
                       height: 34,
                       decoration: BoxDecoration(
                         border: Border(
-                          top: corner[1] == 0 ? const BorderSide(color: Colors.white, width: 3) : BorderSide.none,
-                          bottom: corner[1] == 1 ? const BorderSide(color: Colors.white, width: 3) : BorderSide.none,
-                          left: corner[0] == 0 ? const BorderSide(color: Colors.white, width: 3) : BorderSide.none,
-                          right: corner[0] == 1 ? const BorderSide(color: Colors.white, width: 3) : BorderSide.none,
+                          top: corner[1] == 0
+                              ? const BorderSide(color: Colors.white, width: 3)
+                              : BorderSide.none,
+                          bottom: corner[1] == 1
+                              ? const BorderSide(color: Colors.white, width: 3)
+                              : BorderSide.none,
+                          left: corner[0] == 0
+                              ? const BorderSide(color: Colors.white, width: 3)
+                              : BorderSide.none,
+                          right: corner[0] == 1
+                              ? const BorderSide(color: Colors.white, width: 3)
+                              : BorderSide.none,
                         ),
                         borderRadius: BorderRadius.only(
-                          topLeft: corner[0] == 0 && corner[1] == 0 ? const Radius.circular(6) : Radius.zero,
-                          topRight: corner[0] == 1 && corner[1] == 0 ? const Radius.circular(6) : Radius.zero,
-                          bottomLeft: corner[0] == 0 && corner[1] == 1 ? const Radius.circular(6) : Radius.zero,
-                          bottomRight: corner[0] == 1 && corner[1] == 1 ? const Radius.circular(6) : Radius.zero,
+                          topLeft: corner[0] == 0 && corner[1] == 0
+                              ? const Radius.circular(6)
+                              : Radius.zero,
+                          topRight: corner[0] == 1 && corner[1] == 0
+                              ? const Radius.circular(6)
+                              : Radius.zero,
+                          bottomLeft: corner[0] == 0 && corner[1] == 1
+                              ? const Radius.circular(6)
+                              : Radius.zero,
+                          bottomRight: corner[0] == 1 && corner[1] == 1
+                              ? const Radius.circular(6)
+                              : Radius.zero,
                         ),
                       ),
                     ),
@@ -166,7 +204,9 @@ class _PaymentQrPageState extends State<PaymentQrPage> {
                         borderRadius: BorderRadius.circular(14),
                       ),
                       child: Icon(
-                        label == 'Bayar' ? Icons.qr_code_rounded : Icons.qr_code_2_rounded,
+                        label == 'Bayar'
+                            ? Icons.qr_code_rounded
+                            : Icons.qr_code_2_rounded,
                         size: 22,
                         color: Colors.white,
                       ),
@@ -200,16 +240,26 @@ class _PaymentQrPageState extends State<PaymentQrPage> {
         child: Container(
           decoration: const BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.only(topLeft: Radius.circular(26), topRight: Radius.circular(26)),
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(26), topRight: Radius.circular(26)),
           ),
           padding: const EdgeInsets.fromLTRB(20, 10, 20, 26),
           child: Column(
             children: [
-              Container(width: 42, height: 5, decoration: BoxDecoration(color: AppColors.line, borderRadius: BorderRadius.circular(3))),
+              Container(
+                  width: 42,
+                  height: 5,
+                  decoration: BoxDecoration(
+                      color: AppColors.line,
+                      borderRadius: BorderRadius.circular(3))),
               const SizedBox(height: 16),
               Row(
                 children: [
-                  const FeatureIcon(icon: Icons.storefront_outlined, tone: 'violet', size: 52, iconSize: 26),
+                  const FeatureIcon(
+                      icon: Icons.storefront_outlined,
+                      tone: 'violet',
+                      size: 52,
+                      iconSize: 26),
                   const SizedBox(width: 13),
                   Expanded(
                     child: Column(
@@ -223,7 +273,8 @@ class _PaymentQrPageState extends State<PaymentQrPage> {
                               color: AppColors.ink,
                             )),
                         Text(_merchant['sub'] as String,
-                            style: const TextStyle(fontSize: 12.5, color: AppColors.slate400)),
+                            style: const TextStyle(
+                                fontSize: 12.5, color: AppColors.slate400)),
                       ],
                     ),
                   ),
@@ -231,7 +282,8 @@ class _PaymentQrPageState extends State<PaymentQrPage> {
                 ],
               ),
               const SizedBox(height: 18),
-              const Text('Total tagihan', style: TextStyle(fontSize: 13, color: AppColors.slate400)),
+              const Text('Total tagihan',
+                  style: TextStyle(fontSize: 13, color: AppColors.slate400)),
               const SizedBox(height: 4),
               Text(CurrencyFormatter.format(amount),
                   style: const TextStyle(
@@ -244,7 +296,8 @@ class _PaymentQrPageState extends State<PaymentQrPage> {
               const SizedBox(height: 18),
               AppButton(
                 label: 'Bayar Sekarang',
-                icon: const Icon(Icons.lock_outline_rounded, size: 19, color: Colors.white),
+                icon: const Icon(Icons.lock_outline_rounded,
+                    size: 19, color: Colors.white),
                 onPressed: () {
                   setState(() => _sheetShown = true);
                   context.go('/pin', extra: {
