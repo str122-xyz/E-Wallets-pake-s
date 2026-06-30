@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_constants.dart';
+import '../../../core/deeplink/deep_link_service.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../../injection/injection_container.dart';
@@ -11,7 +12,7 @@ import '../../blocs/payment/payment_bloc.dart';
 import '../../widgets/app_button.dart';
 import '../../widgets/app_top_bar.dart';
 
-/// Lapisan kedua 2FA, dijalankan setelah PIN (lapisan pertama) berhasil.
+/// Lapisan kedua 2FA, dijalankan SETELAH PIN (lapisan pertama) berhasil.
 /// Mengirim/menampilkan OTP sesuai metode yang sudah disetup user (email,
 /// totp, firebase), lalu meneruskan kode yang diinput ke PaymentBloc.
 class OtpVerifyPage extends StatefulWidget {
@@ -40,6 +41,7 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
       setState(() => _method = saved);
     }
     if (!mounted) return;
+    // TOTP tidak butuh "kirim" -- user buka authenticator sendiri.
     if (_method == AppConstants.twoFaTotp) {
       setState(() => _sent = true);
     } else if (_method == AppConstants.twoFaSmtp) {
@@ -68,7 +70,7 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
     final kind = flow['kind'] as String? ?? '';
 
     if (kind == 'topup') {
-      // Topup di backend tidak mewajibkan OTP, tapi tetap menjaga di sisi
+      // Topup di backend tidak mewajibkan OTP, tapi tetap kita jaga di sisi
       // UX agar konsisten melewati lapisan 2FA yang sama.
       context
           .read<PaymentBloc>()
@@ -105,6 +107,23 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
           listener: (context, state) {
             if (state is PaymentTransferSuccess) {
               final result = state.result;
+              final flow = widget.flowData;
+              final callback = flow['callback'] as String?;
+
+              if (flow['kind'] == 'deeplink' &&
+                  callback != null &&
+                  callback.isNotEmpty) {
+                // Kirim hasil transaksi balik ke app E-Commerce(Ngopss-App) pemanggil
+                // SEBELUM menampilkan halaman Success milik app ini sendiri,
+                // supaya app pemanggil bisa langsung update status order-nya.
+                DeepLinkService.sendResult(
+                  callbackBase: callback,
+                  success: true,
+                  orderId: flow['orderId'] as String?,
+                  transactionId: result.transactionId,
+                );
+              }
+
               context.go('/success', extra: {
                 'title': 'Transfer berhasil',
                 'subtitle': result.description,
