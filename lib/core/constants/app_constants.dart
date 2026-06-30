@@ -8,9 +8,9 @@ class AppConstants {
   // Web/Chrome -> localhost, Android -> IP WiFi network
   static String get baseUrl {
     if (kIsWeb) {
-      return 'http://localhost:8080';
+      return 'http://localhost:8081';
     } else {
-      return 'http://192.168.1.11:8080';
+      return 'http://192.168.1.9:8081';
     }
   }
 
