@@ -5,8 +5,6 @@ import '../../../core/utils/currency_formatter.dart';
 import '../../widgets/app_button.dart';
 import '../../widgets/app_logo.dart';
 
-const _orange = Color(0xFFFF6A2B);
-
 class MerchantCheckoutPage extends StatelessWidget {
   /// Data dari Deep Link app E-Commerce, contoh struktur:
   /// {
@@ -47,10 +45,18 @@ class MerchantCheckoutPage extends StatelessWidget {
     final items = isFromDeepLink
         ? <Map<String, Object>>[]
         : [
-            {'name': 'Kemeja Flanel Oversize', 'qty': 1, 'price': 159000.0},
-            {'name': 'Tumbler Stainless 750ml', 'qty': 2, 'price': 45000.0},
+            {
+              'name': 'Kopi Hitam Kapal Api (1 dus)',
+              'qty': 1,
+              'price': 169000.0
+            },
+            {
+              'name': 'Kopi Good Day Capuccino (1 dus)',
+              'qty': 1,
+              'price': 180000.0
+            },
           ];
-    const ship = 12000.0;
+    const ship = 11000.0;
     final subtotal = items.fold(
         0.0, (s, i) => s + (i['price'] as double) * (i['qty'] as int));
     final total = isFromDeepLink
@@ -63,7 +69,7 @@ class MerchantCheckoutPage extends StatelessWidget {
         children: [
           // TokoBelanja header (different brand!)
           Container(
-            color: _orange,
+            color: AppColors.primaryLight,
             padding: EdgeInsets.fromLTRB(
                 16, MediaQuery.of(context).padding.top + 6, 16, 14),
             child: Row(
@@ -148,7 +154,7 @@ class MerchantCheckoutPage extends StatelessWidget {
                                   ),
                                   child: const Center(
                                       child: Icon(Icons.receipt_long_outlined,
-                                          size: 22, color: _orange)),
+                                          size: 22, color: AppColors.primary)),
                                 ),
                                 const SizedBox(width: 12),
                                 Expanded(
@@ -181,7 +187,7 @@ class MerchantCheckoutPage extends StatelessWidget {
                                         width: 46,
                                         height: 46,
                                         decoration: BoxDecoration(
-                                          color: const Color(0xFFFFF1E9),
+                                          color: AppColors.violetSurface,
                                           borderRadius:
                                               BorderRadius.circular(12),
                                         ),
@@ -189,7 +195,7 @@ class MerchantCheckoutPage extends StatelessWidget {
                                             child: Icon(
                                                 Icons.shopping_bag_outlined,
                                                 size: 22,
-                                                color: _orange)),
+                                                color: AppColors.violet)),
                                       ),
                                       const SizedBox(width: 12),
                                       Expanded(
@@ -266,7 +272,7 @@ class MerchantCheckoutPage extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Dompet Kampus Global',
+                              Text('Eh-MyWallets',
                                   style: TextStyle(
                                     fontFamily: 'PlusJakartaSans',
                                     fontSize: 14.5,
@@ -324,7 +330,7 @@ class MerchantCheckoutPage extends StatelessWidget {
                                     fontFamily: 'PlusJakartaSans',
                                     fontSize: 15.5,
                                     fontWeight: FontWeight.w800,
-                                    color: _orange,
+                                    color: AppColors.primary,
                                   )),
                             ],
                           ),

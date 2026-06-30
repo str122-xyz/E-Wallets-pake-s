@@ -130,10 +130,9 @@ class AccountPage extends StatelessWidget {
                                 height: 1, indent: 56, color: AppColors.line2),
                             _Row(
                               icon: Icons.lock_outline_rounded,
-                              tone: 'blue',
+                              tone: 'violet',
                               title: 'Ubah PIN keamanan',
-                              subtitle:
-                                  'Terakhir diubah 2 tahun yang lalu sebelum ganti presiden',
+                              subtitle: 'Terakhir diubah 2 tahun yang lalu',
                               onTap: () => _showResetPinDialog(context),
                             ),
                             const Divider(
@@ -152,7 +151,7 @@ class AccountPage extends StatelessWidget {
                       const SizedBox(height: 18),
                       const Padding(
                         padding: EdgeInsets.only(left: 4, bottom: 8),
-                        child: Text('Akun',
+                        child: Text('Pengaturan',
                             style: TextStyle(
                               fontFamily: 'PlusJakartaSans',
                               fontSize: 13,
@@ -168,20 +167,6 @@ class AccountPage extends StatelessWidget {
                         ),
                         child: Column(
                           children: [
-                            _Row(
-                                icon: Icons.person_outline_rounded,
-                                tone: 'blue',
-                                title: 'Data pribadi',
-                                onTap: () {}),
-                            const Divider(
-                                height: 1, indent: 56, color: AppColors.line2),
-                            _Row(
-                                icon: Icons.account_balance_outlined,
-                                tone: 'green',
-                                title: 'Rekening & kartu tersimpan',
-                                onTap: () {}),
-                            const Divider(
-                                height: 1, indent: 56, color: AppColors.line2),
                             _Row(
                                 icon: Icons.settings_outlined,
                                 tone: 'slate',
@@ -221,7 +206,7 @@ class AccountPage extends StatelessWidget {
                       ),
                       const SizedBox(height: 16),
                       const Center(
-                        child: Text('Dompet Kampus Global · v1.0.0',
+                        child: Text('Eh-MyWallets · v1.0.0',
                             style: TextStyle(
                               fontFamily: 'PlusJakartaSans',
                               fontSize: 12,
