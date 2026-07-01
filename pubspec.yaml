@@ -1,5 +1,5 @@
 name: dompet_kampus_global
-description: "Aplikasi e-money Dompet Kampus Global — bayar, transfer, dan kelola uang kuliah."
+description: "Aplikasi Eh-MyWallets — bayar, transfer, dan kelola uangmu dengan mudah."
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -46,6 +46,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   app_links: ^6.4.1
   url_launcher: ^6.3.2
+  flutter_launcher_icons: ^0.14.4
 
 dev_dependencies:
   flutter_test:
@@ -57,3 +58,9 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icons/app-icon.png"
+  min_sdk_android: 21
