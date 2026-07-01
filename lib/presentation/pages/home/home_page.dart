@@ -137,17 +137,17 @@ class _HomePageState extends State<HomePage> {
                           child: _buildBalanceCard(balance, loading),
                         ),
                       ),
-                      const SizedBox(height: 14),
+                      const SizedBox(height: 2),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: _buildFeatureGrid(),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 12),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: _buildDeeplinkBanner(),
                       ),
-                      const SizedBox(height: 22),
+                      const SizedBox(height: 16),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: _buildTransactions(txns),
