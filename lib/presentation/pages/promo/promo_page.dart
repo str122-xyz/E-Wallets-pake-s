@@ -9,10 +9,30 @@ class PromoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final promos = [
-      {'t': 'Cashback 30% di Kantin Kampus', 'd': 'Maks. Rp10.000 · s.d. 30 Jun', 'tone': 'red', 'icon': Icons.restaurant_outlined},
-      {'t': 'Gratis biaya transfer antarbank', 'd': 'Setiap Jumat · semua bank', 'tone': 'green', 'icon': Icons.send_rounded},
-      {'t': 'Diskon UKT 0% cicilan 6 bulan', 'd': 'Khusus pengguna baru', 'tone': 'violet', 'icon': Icons.receipt_long_outlined},
-      {'t': 'Bonus 5.000 poin top up pertama', 'd': 'Min. Rp50.000', 'tone': 'amber', 'icon': Icons.star_outline_rounded},
+      {
+        't': 'Cashback 30% Scan QRIS',
+        'd': 'Maks. Rp10.000 · s.d. 30 Jun',
+        'tone': 'red',
+        'icon': Icons.qr_code_scanner_rounded
+      },
+      {
+        't': 'Gratis Biaya Transfer Antarbank',
+        'd': 'Bebas kuota tiap bulan',
+        'tone': 'green',
+        'icon': Icons.send_rounded
+      },
+      {
+        't': 'Diskon 50% Bayar Tagihan PLN',
+        'd': 'Khusus pengguna Eh-MyWallets',
+        'tone': 'violet',
+        'icon': Icons.bolt_rounded
+      },
+      {
+        't': 'Bonus 10.000 Poin Top Up',
+        'd': 'Min. top up Rp50.000',
+        'tone': 'amber',
+        'icon': Icons.account_balance_wallet_rounded
+      },
     ];
 
     return Scaffold(
@@ -21,7 +41,8 @@ class PromoPage extends StatelessWidget {
         children: [
           Container(
             color: Colors.white,
-            padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).padding.top + 12, 20, 18),
+            padding: EdgeInsets.fromLTRB(
+                20, MediaQuery.of(context).padding.top + 12, 20, 18),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: const [
@@ -41,34 +62,20 @@ class PromoPage extends StatelessWidget {
             child: ListView(
               padding: const EdgeInsets.all(16),
               children: [
-                // Hero card
                 Container(
-                  decoration: BoxDecoration(
-                    gradient: AppColors.primaryGradient,
+                  decoration: AppColors.headerPatternDecoration(
                     borderRadius: BorderRadius.circular(22),
                   ),
                   padding: const EdgeInsets.all(20),
                   child: Stack(
                     clipBehavior: Clip.none,
                     children: [
-                      Positioned(
-                        right: -40,
-                        bottom: -50,
-                        child: Container(
-                          width: 140,
-                          height: 140,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white.withValues(alpha: 0.1),
-                          ),
-                        ),
-                      ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: const [
-                          AppBadge(label: 'SPESIAL MAHASISWA', tone: 'amber'),
+                          AppBadge(label: 'PROMO SPESIAL', tone: 'amber'),
                           SizedBox(height: 12),
-                          Text('Bayar kuliah,\ndapat cashback 💸',
+                          Text('Transaksi apapun,\npasti makin hemat 💸',
                               style: TextStyle(
                                 fontFamily: 'PlusJakartaSans',
                                 fontSize: 22,
@@ -77,7 +84,7 @@ class PromoPage extends StatelessWidget {
                                 height: 1.2,
                               )),
                           SizedBox(height: 8),
-                          Text('Kumpulkan poin tiap transaksi.',
+                          Text('Kumpulkan poin di setiap transaksimu.',
                               style: TextStyle(
                                 fontFamily: 'PlusJakartaSans',
                                 fontSize: 13.5,
@@ -99,7 +106,11 @@ class PromoPage extends StatelessWidget {
                       padding: const EdgeInsets.all(14),
                       child: Row(
                         children: [
-                          FeatureIcon(icon: p['icon'] as IconData, tone: p['tone'] as String, size: 50, iconSize: 24),
+                          FeatureIcon(
+                              icon: p['icon'] as IconData,
+                              tone: p['tone'] as String,
+                              size: 50,
+                              iconSize: 24),
                           const SizedBox(width: 13),
                           Expanded(
                             child: Column(
