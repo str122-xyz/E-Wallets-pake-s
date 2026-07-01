@@ -6,6 +6,7 @@
   - Nama : Satria Herlambang
   - Kelas : TI 23 SE 1 
   - Dosen : I Ketut Gunawan, S.KOM, M.T.I 
+  - Konsentrasi : Software Engineering
   - Prodi : Teknik Informatika
   - Semester : Genap
   - Tahun Akademik: 2026 - 2027
@@ -164,24 +165,25 @@ Aplikasi ini dibangun menggunakan *library* pendukung berikut untuk mengoptimalk
 
 ### Github Repository Project Terkait
 
-* [Ngopss-App](https://github.com/str122-xyz/1123150070-uts) - Klik untuk melihat repositori E-Commerce (Frontend Flutter 1)
+* [Ngopss-App](https://github.com/str122-xyz/1123150070-uts) - E-Commerce (Frontend Flutter 1)
 
-* [Eh-MyWallets](https://github.com/str122-xyz/E-Wallets-pake-s) - Klik untuk melihat repositori E-Money (Frontend Flutter 2)
+* [Eh-MyWallets](https://github.com/str122-xyz/E-Wallets-pake-s) - E-Money (Frontend Flutter 2)
 
-* [Backend Ngopss-App](https://github.com/str122-xyz/Week-5) - Klik untuk melihat repositori Backend Api E-commerce
+* [Backend Ngopss-App](https://github.com/str122-xyz/Week-5) - Backend Api E-commerce
 (Backend Go Ngopss)
 
-* [Backend Eh-MyWallets](https://github.com/str122-xyz/go2fa) - Klik untuk melihat repositori Backend Api E-Money
+* [Backend Eh-MyWallets](https://github.com/str122-xyz/go2fa) - Backend Api E-Money
 (Backend Go Eh-MyWallets)
 
 ### Demo Presentasi
 
-* [Demo Presentasi Video]() - Klik untuk melihat demo presentasi video (on progress)
+* [Demo Presentasi Video](https://youtu.be/bD0tWplvfSg?si=dNSH_CYnYCAb6iq7)
 
 ### Download Aplikasi
 
 **Latest Release v1.0.0**<br>
-[**Download APK**]()
+
+[![**Download APK**](https://img.shields.io/badge/Download-APK%20Release-blueviolet?style=for-the-badge&logo=android)](https://github.com/str122-xyz/E-Wallets-pake-s/releases/tag/v1.0.0)
 
 ---
 
