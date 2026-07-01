@@ -69,7 +69,7 @@ class MerchantCheckoutPage extends StatelessWidget {
         children: [
           // TokoBelanja header (different brand!)
           Container(
-            color: AppColors.primaryLight,
+            decoration: AppColors.headerPatternDecoration(),
             padding: EdgeInsets.fromLTRB(
                 16, MediaQuery.of(context).padding.top + 6, 16, 14),
             child: Row(
@@ -149,12 +149,12 @@ class MerchantCheckoutPage extends StatelessWidget {
                                   width: 46,
                                   height: 46,
                                   decoration: BoxDecoration(
-                                    color: const Color(0xFFFFF1E9),
+                                    color: AppColors.violetSurface,
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                   child: const Center(
                                       child: Icon(Icons.receipt_long_outlined,
-                                          size: 22, color: AppColors.primary)),
+                                          size: 22, color: AppColors.violet)),
                                 ),
                                 const SizedBox(width: 12),
                                 Expanded(

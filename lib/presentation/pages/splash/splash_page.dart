@@ -34,37 +34,11 @@ class _SplashPageState extends State<SplashPage> {
         body: Container(
           width: double.infinity,
           height: double.infinity,
-          decoration: const BoxDecoration(gradient: AppColors.primaryGradient),
+          decoration: AppColors.headerPatternDecoration(),
           child: SafeArea(
             child: Stack(
               alignment: Alignment.center,
               children: [
-                // Decorative circles
-                Positioned(
-                  top: -120,
-                  right: -90,
-                  child: Container(
-                    width: 320,
-                    height: 320,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white.withValues(alpha: 0.08),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  bottom: 120,
-                  left: -100,
-                  child: Container(
-                    width: 220,
-                    height: 220,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white.withValues(alpha: 0.07),
-                    ),
-                  ),
-                ),
-
                 // Content
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 28),
