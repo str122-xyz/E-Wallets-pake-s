@@ -30,8 +30,7 @@ class AccountPage extends StatelessWidget {
               children: [
                 // Header
                 Container(
-                  decoration: const BoxDecoration(
-                    gradient: AppColors.primaryGradient,
+                  decoration: AppColors.headerPatternDecoration(
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(28),
                       bottomRight: Radius.circular(28),
