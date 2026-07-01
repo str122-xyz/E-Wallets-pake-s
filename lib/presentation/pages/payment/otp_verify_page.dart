@@ -134,7 +134,7 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
                     'Saldo setelah',
                     CurrencyFormatter.format(result.balanceAfter)
                   ],
-                  ['Ref', 'DKG${result.transactionId}'],
+                  ['Ref', 'E-MY${result.transactionId}'],
                 ],
               });
             } else if (state is PaymentTopupSuccess) {
