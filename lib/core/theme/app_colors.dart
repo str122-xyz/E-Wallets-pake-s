@@ -74,4 +74,18 @@ class AppColors {
   };
 
   static List<Color> tone(String name) => tones[name] ?? tones['blue']!;
+
+  // Cetakan Background Pattern
+  static BoxDecoration headerPatternDecoration(
+      {BorderRadiusGeometry? borderRadius}) {
+    return BoxDecoration(
+      gradient: primaryGradient,
+      image: const DecorationImage(
+        image: AssetImage('assets/images/batik.png'),
+        fit: BoxFit.cover,
+        opacity: 0.15,
+      ),
+      borderRadius: borderRadius,
+    );
+  }
 }
