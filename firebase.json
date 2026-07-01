@@ -1,0 +1,1 @@
+{"flutter":{"platforms":{"android":{"default":{"projectId":"e-money-2fa","appId":"1:39225764694:android:a99f423a2ebcaf085584f7","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"e-money-2fa","configurations":{"android":"1:39225764694:android:a99f423a2ebcaf085584f7","web":"1:39225764694:web:6cbba1dd4aaa469f5584f7"}}}}}}

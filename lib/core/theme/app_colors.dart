@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   // Primary Blue
-  static const Color primary = Color(0xFF0B63E5);
-  static const Color primaryLight = Color(0xFF2C8BFF);
-  static const Color primaryDark = Color(0xFF0A4FBF);
+  static const Color primary = Color(0xFF987BFE);
+  static const Color primaryLight = Color(0xFF7A5AF8);
+  static const Color primaryDark = Color(0xFF5A36EC);
   static const Color primarySurface = Color(0xFFE8F1FD);
   static const Color primaryBorder = Color(0xFFB8D0F7);
 
@@ -74,4 +74,18 @@ class AppColors {
   };
 
   static List<Color> tone(String name) => tones[name] ?? tones['blue']!;
+
+  // Cetakan Background Pattern
+  static BoxDecoration headerPatternDecoration(
+      {BorderRadiusGeometry? borderRadius}) {
+    return BoxDecoration(
+      gradient: primaryGradient,
+      image: const DecorationImage(
+        image: AssetImage('assets/images/batik.png'),
+        fit: BoxFit.cover,
+        opacity: 0.15,
+      ),
+      borderRadius: borderRadius,
+    );
+  }
 }

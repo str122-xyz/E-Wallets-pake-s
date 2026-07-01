@@ -17,16 +17,16 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        return ios;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for ios - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -49,20 +49,21 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCWAzGMTyg1uSspi1qfno71sj4iCfp7qGk',
-    appId: '1:948878883710:android:516b94bdc2276b68a0512f',
-    messagingSenderId: '948878883710',
-    projectId: 'fir-emoney-e9256',
-    storageBucket: 'fir-emoney-e9256.firebasestorage.app',
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyDY_MvUt50hc1q_DQTEgQnAsLNXHNmvMp8',
+    appId: '1:39225764694:web:6cbba1dd4aaa469f5584f7',
+    messagingSenderId: '39225764694',
+    projectId: 'e-money-2fa',
+    authDomain: 'e-money-2fa.firebaseapp.com',
+    storageBucket: 'e-money-2fa.firebasestorage.app',
+    measurementId: 'G-DM03TS784D',
   );
 
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyA46uBUvmVQKsSL7HIXZG58MD9jXQCFX7c',
-    appId: '1:948878883710:ios:5363ad2b9fbe06b2a0512f',
-    messagingSenderId: '948878883710',
-    projectId: 'fir-emoney-e9256',
-    storageBucket: 'fir-emoney-e9256.firebasestorage.app',
-    iosBundleId: 'com.kampus.dompetKampusGlobal',
+  static const FirebaseOptions android = FirebaseOptions(
+    apiKey: 'AIzaSyBftnIlqGLzF06Tri3tkcyos3DKhlA4-N4',
+    appId: '1:39225764694:android:a99f423a2ebcaf085584f7',
+    messagingSenderId: '39225764694',
+    projectId: 'e-money-2fa',
+    storageBucket: 'e-money-2fa.firebasestorage.app',
   );
 }

@@ -13,6 +13,9 @@ abstract class SecureStorageDatasource {
   Future<void> saveAuthVerified(bool verified);
   Future<bool> getAuthVerified();
   Future<void> clearAll();
+  Future<void> savePin(String pin);
+  Future<String?> getPin();
+  Future<bool> hasPin();
 }
 
 class SecureStorageDatasourceImpl implements SecureStorageDatasource {
@@ -65,7 +68,8 @@ class SecureStorageDatasourceImpl implements SecureStorageDatasource {
 
   @override
   Future<void> saveAuthVerified(bool verified) async {
-    await _storage.write(key: AppConstants.kAuthVerified, value: verified.toString());
+    await _storage.write(
+        key: AppConstants.kAuthVerified, value: verified.toString());
   }
 
   @override
@@ -77,5 +81,21 @@ class SecureStorageDatasourceImpl implements SecureStorageDatasource {
   @override
   Future<void> clearAll() async {
     await _storage.deleteAll();
+  }
+
+  @override
+  Future<void> savePin(String pin) async {
+    await _storage.write(key: AppConstants.kPinCode, value: pin);
+  }
+
+  @override
+  Future<String?> getPin() async {
+    return _storage.read(key: AppConstants.kPinCode);
+  }
+
+  @override
+  Future<bool> hasPin() async {
+    final pin = await getPin();
+    return pin != null && pin.isNotEmpty;
   }
 }

@@ -6,6 +6,8 @@ import '../../blocs/auth/auth_bloc.dart';
 import '../../widgets/app_avatar.dart';
 import '../../widgets/app_badge.dart';
 import '../../widgets/feature_icon.dart';
+import '../../../injection/injection_container.dart';
+import '../../../data/datasources/local/secure_storage_datasource.dart';
 
 class AccountPage extends StatelessWidget {
   const AccountPage({super.key});
@@ -28,8 +30,7 @@ class AccountPage extends StatelessWidget {
               children: [
                 // Header
                 Container(
-                  decoration: const BoxDecoration(
-                    gradient: AppColors.primaryGradient,
+                  decoration: AppColors.headerPatternDecoration(
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(28),
                       bottomRight: Radius.circular(28),
@@ -39,7 +40,10 @@ class AccountPage extends StatelessWidget {
                       20, MediaQuery.of(context).padding.top + 12, 20, 24),
                   child: Row(
                     children: [
-                      AppAvatar(name: user?.name ?? 'User', size: 60, bg: Colors.white.withValues(alpha: 0.25)),
+                      AppAvatar(
+                          name: user?.name ?? 'User',
+                          size: 60,
+                          bg: Colors.white.withValues(alpha: 0.25)),
                       const SizedBox(width: 14),
                       Expanded(
                         child: Column(
@@ -63,14 +67,16 @@ class AccountPage extends StatelessWidget {
                         ),
                       ),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 5),
                         decoration: BoxDecoration(
                           color: Colors.white.withValues(alpha: 0.18),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: const Row(
                           children: [
-                            Icon(Icons.verified_user_outlined, size: 14, color: Colors.white),
+                            Icon(Icons.verified_user_outlined,
+                                size: 14, color: Colors.white),
                             SizedBox(width: 5),
                             Text('Terverifikasi',
                                 style: TextStyle(
@@ -116,17 +122,20 @@ class AccountPage extends StatelessWidget {
                               title: 'Verifikasi 2 langkah (2FA)',
                               subtitle: 'Aktif · Email OTP',
                               onTap: () => context.go('/setup-2fa'),
-                              right: const AppBadge(label: 'Aktif', tone: 'green'),
+                              right:
+                                  const AppBadge(label: 'Aktif', tone: 'green'),
                             ),
-                            const Divider(height: 1, indent: 56, color: AppColors.line2),
+                            const Divider(
+                                height: 1, indent: 56, color: AppColors.line2),
                             _Row(
                               icon: Icons.lock_outline_rounded,
-                              tone: 'blue',
+                              tone: 'violet',
                               title: 'Ubah PIN keamanan',
-                              subtitle: 'Terakhir diubah 2 bln lalu',
-                              onTap: () {},
+                              subtitle: 'Terakhir diubah 2 tahun yang lalu',
+                              onTap: () => _showResetPinDialog(context),
                             ),
-                            const Divider(height: 1, indent: 56, color: AppColors.line2),
+                            const Divider(
+                                height: 1, indent: 56, color: AppColors.line2),
                             _Row(
                               icon: Icons.fingerprint_rounded,
                               tone: 'violet',
@@ -141,7 +150,7 @@ class AccountPage extends StatelessWidget {
                       const SizedBox(height: 18),
                       const Padding(
                         padding: EdgeInsets.only(left: 4, bottom: 8),
-                        child: Text('Akun',
+                        child: Text('Pengaturan',
                             style: TextStyle(
                               fontFamily: 'PlusJakartaSans',
                               fontSize: 13,
@@ -157,17 +166,18 @@ class AccountPage extends StatelessWidget {
                         ),
                         child: Column(
                           children: [
-                            _Row(icon: Icons.person_outline_rounded, tone: 'blue', title: 'Data pribadi', onTap: () {}),
-                            const Divider(height: 1, indent: 56, color: AppColors.line2),
-                            _Row(icon: Icons.account_balance_outlined, tone: 'green', title: 'Rekening & kartu tersimpan', onTap: () {}),
-                            const Divider(height: 1, indent: 56, color: AppColors.line2),
-                            _Row(icon: Icons.settings_outlined, tone: 'slate', title: 'Pengaturan aplikasi', onTap: () {}),
+                            _Row(
+                                icon: Icons.settings_outlined,
+                                tone: 'slate',
+                                title: 'Pengaturan aplikasi',
+                                onTap: () {}),
                           ],
                         ),
                       ),
                       const SizedBox(height: 18),
                       GestureDetector(
-                        onTap: () => context.read<AuthBloc>().add(AuthLogoutRequested()),
+                        onTap: () =>
+                            context.read<AuthBloc>().add(AuthLogoutRequested()),
                         child: Container(
                           width: double.infinity,
                           padding: const EdgeInsets.symmetric(vertical: 15),
@@ -179,7 +189,8 @@ class AccountPage extends StatelessWidget {
                           child: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.logout_rounded, size: 20, color: AppColors.red),
+                              Icon(Icons.logout_rounded,
+                                  size: 20, color: AppColors.red),
                               SizedBox(width: 9),
                               Text('Keluar',
                                   style: TextStyle(
@@ -194,7 +205,7 @@ class AccountPage extends StatelessWidget {
                       ),
                       const SizedBox(height: 16),
                       const Center(
-                        child: Text('Dompet Kampus Global · v1.0.0',
+                        child: Text('Eh-MyWallets · v1.0.0',
                             style: TextStyle(
                               fontFamily: 'PlusJakartaSans',
                               fontSize: 12,
@@ -210,6 +221,36 @@ class AccountPage extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+
+  void _showResetPinDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Ubah PIN keamanan'),
+        content: const Text(
+            'PIN saat ini akan dihapus. PIN baru akan diminta saat transaksi berikutnya.'),
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.pop(ctx), child: const Text('Batal')),
+          TextButton(
+            onPressed: () async {
+              final storage = sl<SecureStorageDatasource>();
+              await storage.savePin(''); // kosong -> anggap aja belum ada PIN
+              if (ctx.mounted) Navigator.pop(ctx);
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                      content: Text(
+                          'PIN berhasil direset. Set PIN baru saat transaksi berikutnya.')),
+                );
+              }
+            },
+            child: const Text('Reset PIN'),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -265,7 +306,9 @@ class _Row extends StatelessWidget {
                 ],
               ),
             ),
-            right ?? const Icon(Icons.chevron_right_rounded, size: 18, color: AppColors.slate400),
+            right ??
+                const Icon(Icons.chevron_right_rounded,
+                    size: 18, color: AppColors.slate400),
           ],
         ),
       ),
@@ -302,7 +345,10 @@ class _ToggleState extends State<_Toggle> {
             decoration: const BoxDecoration(
               color: Colors.white,
               shape: BoxShape.circle,
-              boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 3, offset: Offset(0, 1))],
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black12, blurRadius: 3, offset: Offset(0, 1))
+              ],
             ),
           ),
         ),
